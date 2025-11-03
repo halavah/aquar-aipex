@@ -124,6 +124,12 @@ AIPEXBASE is committed to becoming the infrastructure and industry standard for 
 ## Contact Us
 📮 Email: service@kuafuai.net
  
+
+## 🎮 Join Our Discord
+
+[![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/VRbmaFjm)
+
+
 ## Chinese Version
 [中文文档](./docs/zh/README_zh.md)
- 
+
