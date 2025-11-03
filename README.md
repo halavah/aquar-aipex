@@ -36,6 +36,7 @@ Supported by: <a href="https://www.codeflying.net/"><strong>CodeFlying</strong><
 
 AIPEXBASE provides standardized AI-native backend capabilities, allowing developers to **stop worrying about backend implementation itself**. Regardless of which AI Coding tool you use (such as Cursor, Trae, etc.), you can easily integrate AIPEXBASE SDK and directly complete end-to-end development from frontend to cloud with AI assistance.
 
+<img src="./docs/aipexbase.jpg">
 ## 🎥 Feature Demo
 ([Feature demonstration video: Build a full-stack web application in one minute](https://www.bilibili.com/video/BV1icW9zRERh/))
 

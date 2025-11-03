@@ -27,7 +27,7 @@
 </p> 
 
 <p align="center">
-<img src="docs/aipexbase.png">
+<img src="./aipexbase_index.jpeg">
 </p>
 
 ## 🚀 核心理念
@@ -35,6 +35,8 @@
 **不写后端，也能拥有完整后端**
 
 aipexbase 通过标准化的 AI 原生后端能力，让开发者**无需再关心后端本身**。无论你使用哪种 AI Coding 工具（如 Cursor、Trae 等），都可以轻松接入 aipexbase SDK，在 AI 的辅助下直接完成从前端到云端的一体化开发。
+
+<img src="../aipexbase.jpg">
 
 ## 🎥 功能演示
 ([功能演示视频，一分钟带你开发一个有前后端的WEB应用](https://www.bilibili.com/video/BV1icW9zRERh/))
