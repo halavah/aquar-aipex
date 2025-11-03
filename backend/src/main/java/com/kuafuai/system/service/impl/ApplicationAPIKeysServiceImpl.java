@@ -24,4 +24,11 @@ public class ApplicationAPIKeysServiceImpl extends ServiceImpl<APIKeyMapper, API
 
         return getOne(queryWrapper);
     }
+
+    @Override
+    public boolean deleteByAppId(String appId) {
+        LambdaQueryWrapper<APIKey> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(APIKey::getAppId, appId);
+        return remove(queryWrapper);
+    }
 }

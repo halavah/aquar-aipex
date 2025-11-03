@@ -6,4 +6,6 @@ import com.kuafuai.system.entity.APIKey;
 
 public interface ApplicationAPIKeysService extends IService<APIKey> {
     APIKey getApiKey(String apiKey);
+
+    boolean deleteByAppId(String appId);
 }
