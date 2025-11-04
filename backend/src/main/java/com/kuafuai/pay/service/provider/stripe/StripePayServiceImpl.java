@@ -18,6 +18,7 @@ import com.stripe.net.RequestOptions;
 import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -44,15 +45,20 @@ public class StripePayServiceImpl implements PayService<PaymentOrderDetail> {
     public Map<String, Object> createPaymentOrder(PayLoginVo login, String orderId, BigDecimal amount, String subject, OrderCreatRequest extraParams, String database) {
 
         long expireTime = System.currentTimeMillis() / 1000 + 30 * 60;
-
+        String currentUrl = extraParams.getCurrentUrl();
+        if (StringUtils.contains(currentUrl,"&")) {
+            currentUrl = currentUrl + "&stripe_callback="+orderId;
+        }else {
+            currentUrl = currentUrl + "?stripe_callback="+orderId;
+        }
         SessionCreateParams params = SessionCreateParams.builder()
                 .addAllPaymentMethodType(
                         Arrays.asList(SessionCreateParams.PaymentMethodType.CARD,
                         SessionCreateParams.PaymentMethodType.LINK)
                 )
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(extraParams.getCurrentUrl()+"&stripe_callback="+orderId)
-                .setCancelUrl(extraParams.getCurrentUrl()+"&stripe_callback="+orderId)
+                .setSuccessUrl(currentUrl)
+                .setCancelUrl(currentUrl)
                 .setCustomerCreation(SessionCreateParams.CustomerCreation.IF_REQUIRED)
                 .setAllowPromotionCodes(true)
                 .setExpiresAt(expireTime)
