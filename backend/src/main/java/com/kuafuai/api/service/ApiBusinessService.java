@@ -136,12 +136,13 @@ public class ApiBusinessService {
             // 按token收费,暂时无法预估,跳过余额检查
             estimatedAmount = BigDecimal.ZERO;
         } else {
-            log.warn("未知的计费模式: {}", billingModel);
-            return callHttpApi(setting, params);
+            // Free 免费
+            estimatedAmount = BigDecimal.ZERO;
+            unitPrice = BigDecimal.ZERO;
         }
 
         // 3. 检查余额(按次收费时检查,按token收费时先调用再扣费)
-        if (!checkUserBalance(appId, estimatedAmount)) {
+        if (billingModel != 0 && !checkUserBalance(appId, estimatedAmount)) {
             throw new BusinessException(ErrorCode.BALANCE_NOT_ENOUGH);
         }
 
@@ -159,13 +160,16 @@ public class ApiBusinessService {
         if (billingModel == 1) {
             // 按次收费
             quantity = 1;
-        } else {
+        } else if (billingModel == 2) {
             // 按token收费,从响应中提取token数量(TODO: tokenPath需要配置)
             quantity = extractTokenCount(response, null);
             if (quantity == null || quantity <= 0) {
                 log.warn("无法提取token数量,跳过计费, appId: {}, apiKey: {}", appId, setting.getKeyName());
                 return response;
             }
+        } else {
+            // Free
+            quantity = 1;
         }
 
         BigDecimal totalAmount = apiBillingService.calculateAmount(billingModel, quantity, unitPrice);
@@ -173,7 +177,7 @@ public class ApiBusinessService {
         // 6. 扣费并记录
         Long userId = getUserIdByAppId(appId);
         boolean deductSuccess = userBalanceService.deductBalance(userId, totalAmount);
-        if (!deductSuccess) {
+        if (billingModel != 0 && !deductSuccess) {
             throw new BusinessException(ErrorCode.BALANCE_NOT_ENOUGH);
         }
 
