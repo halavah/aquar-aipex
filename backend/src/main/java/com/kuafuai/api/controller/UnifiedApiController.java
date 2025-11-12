@@ -48,7 +48,7 @@ public class UnifiedApiController {
         if (setting.getMarketId() > 0) {
             result = apiBusinessService.callApiWithBilling(appId, setting, data);
         } else {
-            result = apiBusinessService.callHttpApi(setting, data);
+            result = apiBusinessService.callHttpApi(setting, data, null);
             ApiResultParser.parser(result);
         }
         String dataPath = setting.getDataPath();
@@ -59,7 +59,12 @@ public class UnifiedApiController {
 
                 if (StringUtils.isNotEmpty(dataType) && StringUtils.equalsIgnoreCase(dataType, "json")) {
                     if (content instanceof String) {
-                        return ResultUtils.success(gson.fromJson(String.valueOf(content), return_value_type));
+                        String contentStr = (String) content;
+                        if (contentStr.trim().startsWith("{") || contentStr.trim().startsWith("[")) {
+                            return ResultUtils.success(gson.fromJson(contentStr, return_value_type));
+                        } else {
+                            return ResultUtils.success(contentStr);
+                        }
                     } else {
                         return ResultUtils.success(content);
                     }
