@@ -72,7 +72,7 @@
 
           <el-form-item :label="t('page.apimarket.form_headers')">
             <el-input v-model="formData.headers" type="textarea" :rows="4"
-                      :placeholder="t('page.apimarket.form_headers_placeholder')"
+                      :placeholder="t('page.apimarket.form_headers_placeholder') + ' { Content-Type: application/json } ' "
                       @input="extractVariables"/>
           </el-form-item>
         </div>
@@ -169,7 +169,7 @@
           <el-form-item :label="t('page.apimarket.form_var_row')">
             <div class="bg-black/30 rounded-lg p-4">
               <div v-if="extractedVars.length === 0" class="text-white/50 text-sm">
-                {{ t('page.apimarket.no_variables_detected') }}
+                {{ t('page.apimarket.no_variables_detected_left') }}&#123;&#123;variableName&#125;&#125;{{ t('page.apimarket.no_variables_detected_right') }}
               </div>
               <div v-else class="space-y-3">
                 <div v-for="(varItem, index) in extractedVars" :key="index"
