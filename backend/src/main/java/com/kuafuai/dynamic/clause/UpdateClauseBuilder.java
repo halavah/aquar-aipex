@@ -33,11 +33,8 @@ public class UpdateClauseBuilder {
 
             // ============ PRIMARY KEY ===============
             if (c.isPrimary()) {
-                // 主键如果有值 → 进入 WHERE 条件
-                if (cond.containsKey(k)) {
-                    whereCond.put(k, v);
-                }
-                continue; // 永远不能出现在 SET
+                whereCond.put(k, v);
+                continue;
             }
 
             // ============ WHERE (Map 类型) ============
@@ -53,11 +50,12 @@ public class UpdateClauseBuilder {
             }
         }
 
-        if (sets.isEmpty())
-            return "SELECT 1";
+        if (sets.isEmpty()) {
+            throw new BusinessException("dynamic.update.no_fields_to_update");
+        }
 
         if (whereCond.isEmpty()) {
-            throw new BusinessException("dynamic.update.params.error");
+            throw new BusinessException("dynamic.update.no_where_conditions");
         }
 
         TableContext wc = ContextFactory.fromTableContext(ctx, whereCond);
