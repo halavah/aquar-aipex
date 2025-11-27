@@ -89,7 +89,7 @@ public class DynamicInterfaceService {
 
         String primaryKey = systemBusinessService.getAppTablePrimaryKey(database, table);
         if (!conditions.containsKey(primaryKey)) {
-            throw new BusinessException("dynamic.update.params.error");
+            return dynamicMapper.update(database, table, conditions);
         }
 
         Map<String, Object> resourceMapData = extractResourceColumns(database, table, conditions);

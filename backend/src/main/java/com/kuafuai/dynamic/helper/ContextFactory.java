@@ -28,6 +28,15 @@ public class ContextFactory {
                 .build();
     }
 
+    public static TableContext fromTableContext(TableContext tableContext, Map<String, Object> cond) {
+        return TableContext.builder()
+                .database(tableContext.getDatabase())
+                .table(tableContext.getTable())
+                .columns(tableContext.getColumns())
+                .conditions(cond)
+                .build();
+    }
+
     private static void checkDatabaseAndTable(String database, String table) {
         DynamicInfoCache cache = SpringUtils.getBean(DynamicInfoCache.class);
         if (cache.getAppTableInfo(database, table) == null) {

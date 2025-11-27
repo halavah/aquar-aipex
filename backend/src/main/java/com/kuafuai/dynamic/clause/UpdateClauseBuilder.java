@@ -1,8 +1,11 @@
 package com.kuafuai.dynamic.clause;
 
+import com.google.common.collect.Maps;
 import com.kuafuai.common.exception.BusinessException;
 import com.kuafuai.common.util.StringUtils;
+import com.kuafuai.dynamic.condition.WhereBuilder;
 import com.kuafuai.dynamic.context.TableContext;
+import com.kuafuai.dynamic.helper.ContextFactory;
 import com.kuafuai.system.entity.AppTableColumnInfo;
 
 import java.util.ArrayList;
@@ -19,25 +22,31 @@ public class UpdateClauseBuilder {
     public String build() {
         Map<String, Object> cond = ctx.getConditions();
 
-        AppTableColumnInfo pk = ctx.getColumns().stream()
-                .filter(AppTableColumnInfo::isPrimary)
-                .findFirst()
-                .orElseThrow(() -> new BusinessException("dynamic.table.not_primary", ctx.getTable()));
-
-        if (!cond.containsKey(pk.getColumnName())) {
-            throw new BusinessException("dynamic.update.params.primary", ctx.getTable());
-        }
-
+        Map<String, Object> whereCond = Maps.newHashMap();
         List<String> sets = new ArrayList<>();
+
         for (AppTableColumnInfo c : ctx.getColumns()) {
-            if (c.isPrimary())
-                continue;
             String k = c.getColumnName();
             Object v = cond.get(k);
-            if (v == null)
+
+            if (v == null) continue;
+
+            // ============ PRIMARY KEY ===============
+            if (c.isPrimary()) {
+                // 主键如果有值 → 进入 WHERE 条件
+                if (cond.containsKey(k)) {
+                    whereCond.put(k, v);
+                }
+                continue; // 永远不能出现在 SET
+            }
+
+            // ============ WHERE (Map 类型) ============
+            if (v instanceof Map) {
+                whereCond.put(k, v);
                 continue;
-            if (v instanceof Map)
-                continue;
+            }
+
+            // ============ SET (普通类型) ===============
             String str = String.valueOf(v);
             if (StringUtils.isNotNull(str)) {
                 sets.add("`" + k + "` = #{conditions." + k + "}");
@@ -47,13 +56,15 @@ public class UpdateClauseBuilder {
         if (sets.isEmpty())
             return "SELECT 1";
 
-        Object pkValue = cond.get(pk.getColumnName());
-        if (pkValue instanceof Map) {
-            return "UPDATE " + ctx.qualifiedTable() + " SET " + String.join(", ", sets)
-                    + " WHERE `" + pk.getColumnName() + "` = #{conditions." + pk.getColumnName() + ".eq}";
-        } else {
-            return "UPDATE " + ctx.qualifiedTable() + " SET " + String.join(", ", sets)
-                    + " WHERE `" + pk.getColumnName() + "` = #{conditions." + pk.getColumnName() + "}";
+        if (whereCond.isEmpty()) {
+            throw new BusinessException("dynamic.update.params.error");
         }
+
+        TableContext wc = ContextFactory.fromTableContext(ctx, whereCond);
+        WhereBuilder whereBuilder = new WhereBuilder(wc, false);
+
+        return "UPDATE " + ctx.qualifiedTable() +
+                " SET " + String.join(", ", sets) +
+                " WHERE " + whereBuilder.build();
     }
 }
