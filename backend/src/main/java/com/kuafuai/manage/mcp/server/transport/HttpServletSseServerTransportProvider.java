@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -336,7 +337,9 @@ public class HttpServletSseServerTransportProvider extends HttpServlet implement
 
             String token = request.getParameter("token");
             // Process the message through the session's handle method
-            session.handle(message, token).subscribeOn(Schedulers.boundedElastic()).block(); // Block for Servlet compatibility
+            session.handle(message, token)
+                    .subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofSeconds(30)).block(); // Block for Servlet compatibility
 
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
