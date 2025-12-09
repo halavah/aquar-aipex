@@ -230,6 +230,7 @@ CREATE TABLE `api_market` (
   `var_row` varchar(1000) DEFAULT NULL,
   `status` int DEFAULT '0',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `is_billing` int DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
