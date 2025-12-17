@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "aipexbase-mcp-server": {
+      "url": "http://localhost:9991/mcp/sse?token=kf_api_E1Hp1lx5YsdemdDMD1Ej22YeEm887Vd9"
+    }
+  }
+}
