@@ -33,7 +33,14 @@ public class UpdateClauseBuilder {
 
             // ============ PRIMARY KEY ===============
             if (c.isPrimary()) {
-                whereCond.put(k, v);
+                if (v instanceof Map) {
+                    Map<?, ?> mapVal = (Map<?, ?>) v;
+                    if (!mapVal.isEmpty()) {
+                        whereCond.put(k, v);
+                    }
+                } else {
+                    whereCond.put(k, v);
+                }
                 continue;
             }
 
