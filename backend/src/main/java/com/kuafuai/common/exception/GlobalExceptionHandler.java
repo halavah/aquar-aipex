@@ -97,6 +97,7 @@ public class GlobalExceptionHandler {
     public BaseResponse<?> handleMyBatisException(MyBatisSystemException e) {
         BusinessException bizEx = (BusinessException) getCauseByType(e, BusinessException.class);
         if (bizEx != null) {
+            sendMessage(bizEx.getMessage());
             return ResultUtils.error(ErrorCode.SYSTEM_ERROR, bizEx.getMessage());
         }
         return ResultUtils.error(ErrorCode.SYSTEM_ERROR, e.getMessage());
