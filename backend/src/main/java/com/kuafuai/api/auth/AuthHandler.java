@@ -17,7 +17,7 @@ public interface AuthHandler {
      * @param apiDefinition API定义
      * @param params        请求参数
      */
-    void handle(DynamicApiSetting setting, ApiDefinition apiDefinition, ApiMarket apiMarket, Map<String, Object> params);
+    void handle(DynamicApiSetting setting, ApiDefinition apiDefinition, ApiMarket apiMarket, Map<String, Object> params) throws Exception;
 
     /**
      * 获取支持的认证类型
