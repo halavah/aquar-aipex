@@ -35,7 +35,7 @@ if [ $? -eq 0 ]; then
     exit 0
 fi
 
-# Commit changes with timestamped message
+# Commit changes with timestamped message (format: YYYYMMDD_HHMMSS)
 timestamp=$(date +"%Y%m%d_%H%M%S")
 echo "Committing changes with timestamp: $timestamp..."
 git commit -m "$timestamp"

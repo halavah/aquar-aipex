@@ -30,45 +30,27 @@ echo ═════════════════════════
 echo   项目管理
 echo ═══════════════════════════════════════════════════════════
 echo.
-echo   1. 🚢 部署到 Git        (deploy.bat)
-echo      → 自动提交并推送代码到远程仓库
-echo.
-echo   2. 🚀 启动后端服务器     (start-backend.bat)
+echo   1. 🚀 启动后端服务器     (start-backend.bat)
 echo      → 启动 Spring Boot 后端
 echo.
-echo   3. 🎨 启动前端服务器     (start-frontend.bat)
+echo   2. 🎨 启动前端服务器     (start-frontend.bat)
 echo      → 启动 Vue 前端开发环境
-echo.
-echo   4. 🧹 清理 Git 跟踪     (ignore.bat)
-echo      → 根据 .gitignore 移除已跟踪的文件
-echo.
 echo ═══════════════════════════════════════════════════════════
 echo.
-echo   0. 🚪 退出
+echo   9. 🚪 退出
 echo.
 echo ═══════════════════════════════════════════════════════════
 echo.
 
-set /p choice="请选择操作 [0-4] (默认: 1): "
+set /p choice="请选择操作 [1-2, 9] (默认: 1): "
 
 REM 如果用户直接按回车，默认选择 1
 if "%choice%"=="" set choice=1
 
-if "%choice%"=="1" goto DEPLOY
-if "%choice%"=="2" goto START_BACKEND
-if "%choice%"=="3" goto START_FRONTEND
-if "%choice%"=="4" goto IGNORE
-if "%choice%"=="0" goto EXIT
+if "%choice%"=="1" goto START_BACKEND
+if "%choice%"=="2" goto START_FRONTEND
+if "%choice%"=="9" goto EXIT
 goto INVALID
-
-:DEPLOY
-echo.
-echo ╔════════════════════════════════════════════════════════════╗
-echo ║  执行: 部署到 Git
-echo ╚════════════════════════════════════════════════════════════╝
-echo.
-call "%BIN_DIR%\deploy.bat"
-goto WAIT
 
 :START_BACKEND
 echo.
@@ -86,15 +68,6 @@ echo ║  执行: 启动前端服务器
 echo ╚════════════════════════════════════════════════════════════╝
 echo.
 call "%BIN_DIR%\start-frontend.bat"
-goto WAIT
-
-:IGNORE
-echo.
-echo ╔════════════════════════════════════════════════════════════╗
-echo ║  执行: 清理 Git 跟踪
-echo ╚════════════════════════════════════════════════════════════╝
-echo.
-call "%BIN_DIR%\ignore.bat"
 goto WAIT
 
 :INVALID

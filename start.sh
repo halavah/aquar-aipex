@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# ========================================
+# Halavah's Tech - 管理脚本
+# ========================================
+
 # 颜色定义
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -78,25 +82,19 @@ run_script() {
 # 显示主菜单
 show_menu() {
     clear
+    print_header "Halavah's Tech - 管理控制台"
+
     echo -e "${PURPLE}═══════════════════════════════════════════════════════════${NC}"
     echo -e "${CYAN}  项目管理${NC}"
     echo -e "${PURPLE}═══════════════════════════════════════════════════════════${NC}"
     echo ""
 
-    echo -e "${GREEN}  0.${NC} 🚢 ${BLUE}部署到 Git${NC}        (deploy.sh)"
-    echo -e "     ${PURPLE}→${NC} 自动提交并推送代码到远程仓库"
+    echo -e "${GREEN}  1.${NC} 🚀 ${BLUE}启动后端服务器${NC}     (start-backend.sh)"
+    echo -e "     ${PURPLE}→${NC} 启动 Spring Boot 后端"
     echo ""
 
-    echo -e "${GREEN}  1.${NC} 🧹 ${BLUE}清理 Git 跟踪${NC}     (clear-ignore.sh)"
-    echo -e "     ${PURPLE}→${NC} 根据 .gitignore 移除已跟踪的文件"
-    echo ""
-
-    echo -e "${GREEN}  2.${NC} 🗜️  ${BLUE}压缩 Git 仓库${NC}     (clear-git.sh)"
-    echo -e "     ${PURPLE}→${NC} 优化 .git 目录，减小体积（保留所有历史）"
-    echo ""
-
-    echo -e "${GREEN}  3.${NC} 🧹 ${BLUE}清理 Git 历史${NC}     (clear-history.sh)"
-    echo -e "     ${PURPLE}→${NC} 删除旧提交，仅保留最近 N 个（需谨慎）"
+    echo -e "${GREEN}  2.${NC} 🎨 ${BLUE}启动前端服务器${NC}     (start-frontend.sh)"
+    echo -e "     ${PURPLE}→${NC} 启动 Vue 前端开发环境"
     echo ""
 
     echo -e "${PURPLE}═══════════════════════════════════════════════════════════${NC}"
@@ -117,35 +115,25 @@ main() {
         # 重置 choice 变量，避免保留上次的输入
         choice=""
 
-        echo -ne "${YELLOW}请选择操作 [0-9] (默认: 0 - 部署):${NC} "
+        echo -ne "${YELLOW}请选择操作 [1-2, 9] (默认: 1):${NC} "
         read -r choice
 
-        # 如果用户直接按回车，默认选择 0 (部署)
-        choice=${choice:-0}
+        # 如果用户直接按回车，默认选择 1
+        choice=${choice:-1}
 
         case $choice in
-            0)
-                print_header "执行: 部署到 Git"
-                run_script "deploy.sh"
-                ;;
-
             1)
-                print_header "执行: 清理 Git 跟踪"
-                run_script "clear-ignore.sh"
+                print_header "执行: 启动后端服务器"
+                run_script "start-backend.sh"
                 ;;
 
             2)
-                print_header "执行: 压缩 Git 仓库"
-                run_script "clear-git.sh"
-                ;;
-
-            3)
-                print_header "执行: 清理 Git 历史"
-                run_script "clear-history.sh"
+                print_header "执行: 启动前端服务器"
+                run_script "start-frontend.sh"
                 ;;
 
             9)
-                print_info "感谢使用管理控制台"
+                print_info "感谢使用 Halavah's Tech 管理控制台"
                 echo ""
                 exit 0
                 ;;
@@ -171,5 +159,5 @@ if [ ! -d "$BIN_DIR" ]; then
     exit 1
 fi
 
-# 启动主循环
+# 启动主循环（交互式菜单，直接回车默认执行选项 1）
 main
