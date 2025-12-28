@@ -28,10 +28,10 @@ function Show-MainMenu {
     Write-Host "  项目管理"
     Write-Host "═══════════════════════════════════════════════════════════"
     Write-Host ""
-    Write-Host "  1. 启动后端服务器     (start-backend.bat)"
+    Write-Host "  1. 启动后端服务器     (start-backend.ps1)"
     Write-Host "     → 启动 Spring Boot 后端"
     Write-Host ""
-    Write-Host "  2. 启动前端服务器     (start-frontend.bat)"
+    Write-Host "  2. 启动前端服务器     (start-frontend.ps1)"
     Write-Host "     → 启动 Vue 前端开发环境"
     Write-Host "═══════════════════════════════════════════════════════════"
     Write-Host ""
@@ -48,8 +48,8 @@ function Start-Backend {
     Write-Host "╚════════════════════════════════════════════════════════════╝"
     Write-Host ""
 
-    $backendScript = Join-Path $BinDir "start-backend.bat"
-    & $backendScript
+    $backendScript = Join-Path $BinDir "start-backend.ps1"
+    & pwsh -ExecutionPolicy Bypass -File $backendScript
 }
 
 function Start-Frontend {
@@ -59,8 +59,8 @@ function Start-Frontend {
     Write-Host "╚════════════════════════════════════════════════════════════╝"
     Write-Host ""
 
-    $frontendScript = Join-Path $BinDir "start-frontend.bat"
-    & $frontendScript
+    $frontendScript = Join-Path $BinDir "start-frontend.ps1"
+    & pwsh -ExecutionPolicy Bypass -File $frontendScript
 }
 
 # 主循环
