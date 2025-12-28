@@ -82,6 +82,7 @@ public class ApiClient {
             if ("template".equalsIgnoreCase(apiDef.bodyType)) {
                 // 通过 模版 转换
                 String rendered = ApiUtil.interpolateString(apiDef.bodyTemplate, templateMaps);
+                log.info("Rendered template: {}", rendered);
 
                 body = RequestBody.create(MediaType.get("application/json; charset=utf-8"), rendered);
             } else if ("form".equalsIgnoreCase(apiDef.bodyType)) {
